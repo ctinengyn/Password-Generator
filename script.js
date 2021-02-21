@@ -1,8 +1,8 @@
 // Variables for different choices for password 'strings'
-var numbers = '0123456789';
-var symbols = '!@#$%^&*?';
-var lowercaseLetters = 'abcdefghijklmnopqrstuvwxyz';
-var uppercaseLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+var numbers = ['0','1','2','3','4','5','6','7','8','9'];
+var symbols = ['!','@','#','$','%','^','&','*','?'];
+var lowercaseLetters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+var uppercaseLetters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
 
 // Users choice of length and variables
 var userChoice = {};
@@ -28,45 +28,73 @@ function length() {
 // Not a valid number (isNaN) will pop in return
 
 // Get user input
-var numberQuestion = confirm('Do you want numbers? Click OK for yes, cancel for no')
+  var numberQuestion = confirm('Do you want numbers? Click OK for yes, cancel for no');
 
-var symbolQuestion = confirm('Do you want symbols? Click OK for yes, cancel for no')
+  var symbolQuestion = confirm('Do you want symbols? Click OK for yes, cancel for no');
 
-var lowercaseQuestion = confirm('Do you want lowercase characters? Click OK for yes, cancel for no')
+  var lowercaseQuestion = confirm('Do you want lowercase characters? Click OK for yes, cancel for no');
 
-var uppercaseQuestion = confirm('Do you want uppercase characters? Click OK for yes, cancel for no')
+  var uppercaseQuestion = confirm('Do you want uppercase characters? Click OK for yes, cancel for no');
 
 
-if (numberQuestion) {
-  randomPassword.push(numbers);
+  if (numberQuestion === false && symbolQuestion === false && lowercaseQuestion === false && uppercaseQuestion === false) {
+    window.alert('Please select at least one character type');
+    return;
+  }
+
+  // Saving users input from prompt questions
+  var passwordChoice = {
+    userChoice: userChoice,
+    numberQuestion: numberQuestion,
+    symbolQuestion: symbolQuestion,
+    lowercaseQuestion: lowercaseQuestion,
+    uppercaseQuestion: uppercaseQuestion
+  }
+  return passwordChoice;
 }
-if (symbolQuestion) {
-  randomPassword.push(symbols);
-}
-if (lowercaseQuestion) {
-  randomPassword.push(lowercaseLetters);
-}
-if (uppercaseQuestion) {
-  randomPassword.push(uppercaseLetters);
-}
-else if (!numberQuestion && !symbolQuestion && !lowercaseQuestion && !uppercaseLetters) {
-  window.alert('Please select at least one character type')
-  return;
-}
-
-
-// Saving users input from prompt questions
-var passwordChoice = {
-  userChoice: userChoice,
-  numberQuestion: numberQuestion,
-  symbolQuestion: symbolQuestion,
-  lowercaseQuestion: lowercaseQuestion,
-  uppercaseQuestion: uppercaseQuestion
-}
-return passwordChoice;
-
 // If user picks numbers, symbols, lowercase letters or uppercase letters it will be in their new password
+
+function generatePassword() {
+  
+  var userOption = length();
+  console.log(userOption.userChoice);
+  console.log(userOption.numberQuestion);
+  console.log(userOption.symbolQuestion);
+  console.log(userOption.lowercaseQuestion);
+  console.log(userOption.uppercaseQuestion);
+  
+  // 2 empty arrays that hold the values for password
+  var randomPassword = [];
+  var finalPassword = [];
+
+  if (userOption.numberQuestion) {
+    randomPassword.push(...numbers);
+  }
+  if (userOption.symbolQuestion) {
+    randomPassword.push(...symbols);
+  }
+  if (userOption.lowercaseQuestion) {
+    randomPassword.push(...lowercaseLetters);
+  }
+  if (userOption.uppercaseQuestion) {
+    randomPassword.push(...uppercaseLetters);
+  }
+
+  for (var i = 0; i < userOption.userChoice; i++) {
+    var newCharacters = random(randomPassword);
+    finalPassword = finalPassword + newCharacters; 
+  };
+    return finalPassword;
+}; 
+ 
+function random(characterType) {
+  var randomIndex = Math.floor(Math.random() * characterType.length);
+  var randomElement = characterType[randomIndex];
+  console.log(randomIndex);
+  console.log(randomElement);
+  return randomElement;
 }
+
 
 // Write password to the #password input
 function writePassword() {
@@ -74,7 +102,6 @@ function writePassword() {
   var passwordText = document.querySelector("#password");
 
   passwordText.value = password;
-
 }
 
 // Add event listener to generate button
