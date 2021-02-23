@@ -67,6 +67,7 @@ function generatePassword() {
   var randomPassword = [];
   var finalPassword = [];
 
+ // arrays that will generate at least 1 number, symbol, lowercase or/and uppercase
   if (userOption.numberQuestion) {
     randomPassword.push(...numbers);
   }
@@ -80,6 +81,7 @@ function generatePassword() {
     randomPassword.push(...uppercaseLetters);
   }
 
+  // Loops: If statement 0 returns true, the loop will start over, if it returns false, the loop will end
   for (var i = 0; i < userOption.userChoice; i++) {
     var newCharacters = random(randomPassword);
     finalPassword = finalPassword + newCharacters; 
